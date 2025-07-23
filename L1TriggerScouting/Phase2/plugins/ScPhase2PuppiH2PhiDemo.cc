@@ -42,7 +42,7 @@ private:
 
   struct Cuts {
     float minptD = 10;
-    float minptQ = 30;
+    float minptQ = 1;
     float maxdeltarD2 = 0.40 * 0.40;
     float minmassH = 100;
     float maxmassH = 150;
@@ -144,7 +144,7 @@ void ScPhase2PuppiH2PhiDemo::runObj(const OrbitCollection<T> &src,
           continue;
 
         auto mass2 = pairmass({{ix[i1], ix[i2]}}, cands, {{0.4937, 0.4937}});
-        if (mass2 >= cuts.minmassQ and mass2 <= cuts.maxmassQ)
+        if (!(mass2 >= cuts.minmassQ and mass2 <= cuts.maxmassQ))
           continue;
 
         auto [drcond, drQ] = deltar(cands[ix[i1]].eta(), cands[ix[i2]].eta(), cands[ix[i1]].phi(), cands[ix[i2]].phi());
@@ -185,7 +185,7 @@ void ScPhase2PuppiH2PhiDemo::runObj(const OrbitCollection<T> &src,
           continue;  // OS pair
         auto mass2 = pairmass(
             {{ix[i3], ix[i4]}}, cands, {{0.4937, 0.4937}});  // (cands[ix[i3]].p4() + cands[ix[i4]].p4()).mass();
-        if (mass2 >= cuts.minmassQ and mass2 <= cuts.maxmassQ)
+        if (!(mass2 >= cuts.minmassQ and mass2 <= cuts.maxmassQ))
           continue;  // Q mass
         auto [drcond, drQ] = deltar(cands[ix[i3]].eta(), cands[ix[i4]].eta(), cands[ix[i3]].phi(), cands[ix[i4]].phi());
         if (!drcond)
@@ -213,6 +213,10 @@ void ScPhase2PuppiH2PhiDemo::runObj(const OrbitCollection<T> &src,
     auto mass = quadrupletmass(bestQuadruplet, cands, {{0.4937, 0.4937, 0.4937, 0.4937}});
     if (!(mass >= cuts.minmassH and mass <= cuts.maxmassH))
       continue;
+
+    // std::cout << "ORIGINAL" << std::endl;
+    // std::cout << "cand 0 - ids = " << bestQuadruplet[0] << " and " << bestQuadruplet[1] << std::endl ;
+    // std::cout << "cand 1 - ids = " << bestQuadruplet[2] << " and " << bestQuadruplet[3] << std::endl << std::endl;
 
     ret->emplace_back(bx);
     nPass++;

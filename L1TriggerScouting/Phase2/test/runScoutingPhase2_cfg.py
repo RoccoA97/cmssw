@@ -6,7 +6,7 @@ from L1TriggerScouting.Phase2.options_cff import options
 options.parseArguments()
 if options.buNumStreams == []:
     options.buNumStreams.append(3)
-analyses = options.analyses if options.analyses else ["w3pi", "wdsg", "wpig", "hrhog", "hphig", "hjpsig", "hphijpsi", "h2rho", "h2phi", "dimu"]
+analyses = options.analyses if options.analyses else ["w3pi", "wdsg", "wpig", "hrhog", "hphig", "hjpsig", "hphijpsi", "h2rho", "h2phi", "zdee", "dimu"]
 print(f"Analyses set to {analyses}")
 
 process = cms.Process("SCPU")
@@ -97,6 +97,7 @@ process.s_analyses = cms.Sequence(sum(analysisModules[1:], analysisModules[0]))
 
 ## Configure selected outputs
 process.scPhase2SelectedBXs.analysisLabels = [cms.InputTag(f"{a}Struct", "selectedBx") for a in analyses]
+process.scPhase2SelectedBXs.nPrint = cms.untracked.uint32(1000)
 
 ## Define inclusive processing (ZeroBias)
 from FWCore.Modules.preScaler_cfi import preScaler
@@ -118,13 +119,13 @@ process.p_selected.associate(process.maskedTableProducersTask)
 process.scPhase2NanoAll.fileName = options.outFile.replace(".root","")+".inclusive.root"
 process.scPhase2NanoAll.SelectEvents.SelectEvents = ['p_inclusive']
  
-process.scPhase2PuppiNanoSelected.fileName = options.outFile.replace(".root","")+".selected.root"
-process.scPhase2PuppiNanoSelected.SelectEvents.SelectEvents = ['p_selected']
-process.scPhase2PuppiNanoSelected.outputCommands += [ f"keep *_{a}Struct_*_*" for a in analyses ]
+process.scPhase2NanoSelected.fileName = options.outFile.replace(".root","")+".selected.root"
+process.scPhase2NanoSelected.SelectEvents.SelectEvents = ['p_selected']
+process.scPhase2NanoSelected.outputCommands += [ f"keep *_{a}Struct_*_*" for a in analyses ]
 
 process.o_nanoInclusive = cms.EndPath(process.scPhase2NanoAll)
-process.o_nanoSelected = cms.EndPath(process.scPhase2PuppiNanoSelected)
-process.o_nanoBoth = cms.EndPath(process.scPhase2NanoAll + process.scPhase2PuppiNanoSelected)
+process.o_nanoSelected = cms.EndPath(process.scPhase2NanoSelected)
+process.o_nanoBoth = cms.EndPath(process.scPhase2NanoAll + process.scPhase2NanoSelected)
 
 sched = [ process.p_inclusive, process.p_selected ]
 if options.run != "both":  [ getattr(process, "p_" + options.run)]

@@ -11,7 +11,7 @@ options.register ('lumiNumber',
                   1,
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,          # string, int, or float
-                  "Run Number")
+                  "Lumisection Number (only for filelist mode)")
 
 options.register ('daqSourceMode',
                   'ScoutingPhase2', # default value
@@ -67,6 +67,18 @@ options.register ('tkMuStreamIDs',
                   VarParsing.VarParsing.varType.int,          # string, int, or float
                   "Stream IDs for the TkMu inputs")
 
+options.register ('ttrackStreamIDs',
+                  [], # default value
+                  VarParsing.VarParsing.multiplicity.list,
+                  VarParsing.VarParsing.varType.int,          # string, int, or float
+                  "Stream IDs for the Tracker Track inputs")
+
+options.register ('pfStreamIDs',
+                  [], # default value
+                  VarParsing.VarParsing.multiplicity.list,
+                  VarParsing.VarParsing.varType.int,          # string, int, or float
+                  "Stream IDs for the PF inputs")
+
 options.register ('fuBaseDir',
                   '/dev/shm/data', # default value
                   VarParsing.VarParsing.multiplicity.singleton,
@@ -97,11 +109,17 @@ options.register ('run',
                   VarParsing.VarParsing.varType.string,          # string, int, or float
                   "'inclusive', 'selected', 'both' (default).")
 
+options.register ('candReco',
+                  [], # default value
+                  VarParsing.VarParsing.multiplicity.list,
+                  VarParsing.VarParsing.varType.string,          # string, int, or float
+                  "reconstructions: any list of recIsoTkEm, recMeson, recMesonPhi, recMesonRho, recMesonJpsi")
+
 options.register ('analyses',
                   [], # default value
                   VarParsing.VarParsing.multiplicity.list,
                   VarParsing.VarParsing.varType.string,          # string, int, or float
-                  "analyses: any list of w3pi, wdsg, wpig, hrhog, hphig, hjpsig, h2rho, h2phi, dimu")
+                  "analyses: any list of w3pi, wdsg, wpig, hrhog, hphig, hjpsig, h2rho, h2phi, dimu, zdee")
 
 options.register ('prescaleInclusive',
                   100, # default value
@@ -110,16 +128,16 @@ options.register ('prescaleInclusive',
                   "Prescale factor for the inclusive stream.")
 
 options.register ('outMode',
-                  'none', # default value
+                  'nanoBoth', # default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,          # string, int, or float
                   "output (none, nanoSelected, nanoInclusive, nanoBoth)")
-                   
+
 options.register ('outFile',
                   "NanoOutput.root",
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
-                  "Sub lumisection number to process")
+                  "Output file name")
 
 options.register ('task',
                   0,
