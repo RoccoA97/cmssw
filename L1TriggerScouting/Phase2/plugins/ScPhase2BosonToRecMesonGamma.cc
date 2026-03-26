@@ -114,16 +114,16 @@ void ScPhase2BosonToRecMesonGamma::runObj(const OrbitCollection<T> &srcGamma,
     bestTripletFound = false;
 
     auto range = srcGamma.bxIterator(bx);
-    const T *candsGamma = &range.front();
     auto nGamma = range.size();
 
     auto rangeMesons = srcMeson.bxIterator(bx);
-    const U *candsMeson = &rangeMesons.front();
     unsigned int nMesons = rangeMesons.size();
 
     if (nGamma < 1 || nMesons < 1)
       continue;
 
+    const T *candsGamma = &range.front();
+    const U *candsMeson = &rangeMesons.front();
     for (unsigned int i1 = 0; i1 < nMesons; ++i1) {
       if (candsMeson[i1].pt() < minPtQ_)
         continue;
