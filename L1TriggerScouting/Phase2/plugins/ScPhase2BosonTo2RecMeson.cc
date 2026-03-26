@@ -119,12 +119,12 @@ void ScPhase2BosonTo2RecMeson::runObj(const OrbitCollection<T> &srcMeson1,
     nTry++;
 
     auto rangeMeson1 = srcMeson1.bxIterator(bx);
-    const T *candsMeson1 = &rangeMeson1.front();
     unsigned int nMeson1 = rangeMeson1.size();
+    const T *candsMeson1 = (nMeson1 > 0) ? &rangeMeson1.front() : nullptr;
 
     auto rangeMeson2 = srcMeson2.bxIterator(bx);
-    const T *candsMeson2 = &rangeMeson2.front();
     unsigned int nMeson2 = rangeMeson2.size();
+    const T *candsMeson2 = (nMeson2 > 0) ? &rangeMeson2.front() : nullptr;
 
     bestMesonPairScore = 0.;
     bestMesonPairFound = false;
